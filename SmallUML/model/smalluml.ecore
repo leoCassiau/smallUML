@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="smalluml" nsURI="http://www.univ-nantes.fr/smalluml" nsPrefix="smalluml">
-  <eClassifiers xsi:type="ecore:EClass" name="Class" eSuperTypes="#//NamedElement #//Type">
+  <eClassifiers xsi:type="ecore:EClass" name="Class" eSuperTypes="#//Type">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedOperations" upperBound="-1"
-        eType="#//Operation"/>
+        eType="#//Operation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="superClass" upperBound="-1"
         eType="#//Class"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedProperties" upperBound="-1"
-        eType="#//Property"/>
+        eType="#//Property" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Operation" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="resultType" eType="#//Type"/>
@@ -49,13 +49,14 @@
       <details key="documentation" value="String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters."/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//NamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="TypeString" eSuperTypes="#//Type">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//String"
+        defaultValueLiteral=" "/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeReal" eSuperTypes="#//Type">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//Real"
-        defaultValueLiteral=""/>
+        defaultValueLiteral="0.0"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeInteger" eSuperTypes="#//Type">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//Integer"/>
@@ -65,5 +66,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TypeBoolean" eSuperTypes="#//Type">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//Boolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Root">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//Class" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="primitiveTypes" upperBound="-1"
+        eType="#//Type" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
