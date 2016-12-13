@@ -38,21 +38,18 @@ TypeUnlimitedNatural returns TypeUnlimitedNatural:
 ;
 
 Class returns Class:
-	'Class' name=EString '{'
-		('superClass'':' 	superClass+=([Class])+)? 
-		('properties'':'	ownedProperties+=(Property)+)?
-		('operations'':'	ownedOperations+=(Operation)+)?
+	'Class' name=EString ( ':' superClass+=([Class])+ )? '{'
+		('properties' '{' ownedProperties+=(Property)+ '}' )?
+		('operations' '{' ownedOperations+=(Operation)+ '}' )?
 	'}'
 ;
 	
 Operation returns Operation :
-	name=EString '(' ((params+=[Type | 'String'] EString ',')* params+=[Type] EString )? ')' ':' resultType=[Type]
+	name=EString '(' ( (params+=[Type] ',' )* params+=[Type] )? ')' (':' resultType=[Type])?
 ;
 
 Property returns Property :
-	'type'			type=[Type]
-	'upperBound''='	upperBound=EInt
-	'lowerBound''='	lowerBound=EInt
+	lowerBound=EInt '..' upperBound=EInt type=[Type] name=EString
 ;
 
 EInt returns ecore::EInt:

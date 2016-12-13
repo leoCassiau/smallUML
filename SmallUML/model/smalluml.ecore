@@ -49,7 +49,7 @@
       <details key="documentation" value="String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters."/>
     </eAnnotations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Type" eSuperTypes="#//NamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="TypeString" eSuperTypes="#//Type">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//String"
         defaultValueLiteral=" "/>
