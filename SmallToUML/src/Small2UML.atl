@@ -9,7 +9,8 @@ rule Root2Package {
 		s: MM!Root
 	to
 		t: MM1!Package (
-			member <- s.elements->collect(c | thisModule.Class2Class(c))
+			packagedElement <- (s.primitiveTypes->collect(p | thisModule.Type2PrimitiveType(p)))
+				.union(s.elements->collect(c | thisModule.Class2Class(c)))
 		)
 }
 
@@ -19,7 +20,7 @@ lazy rule Class2Class {
 	to
 		t: MM1!Class (
 			name <- s.name,
-			superClass <- s.superClass->collect(sc | thisModule.Type2Type(sc)),
+			--superClass <- s.superClass->collect(sc | thisModule.Type2Type(sc)),
 			ownedAttribute <- s.ownedProperties->collect(p | thisModule.Property2Property(p)),
 			ownedOperation <- s.ownedOperations->collect(o | thisModule.Operation2Operation(o))
 		)
@@ -31,9 +32,12 @@ lazy rule Property2Property {
 	to
 		t: MM1!Property (
 			name <- s.name,
-			type <- thisModule.Type2Type(s.type), -- TODO
 			upper <- s.upperBound,
-			lower <- s.lowerBound
+			lower <- s.lowerBound,
+			type <- if  s.type.oclIsTypeOf(MM!Class)
+				then thisModule.Class2Class(s.type)
+				else thisModule.Type2PrimitiveType(s.type) 
+				endif
 		)
 }
 
@@ -43,16 +47,35 @@ lazy rule Operation2Operation {
 	to
 		t: MM1!Operation (
 			name <- s.name,
-			type <- thisModule.Type2Type(s.resultType),
-			ownedParameter <- s.params->collect(p | thisModule.Type2Type(p)) --TODO
+			--type <- if s.resultType.oclIsTypeOf(MM!Class) then thisModule.Class2Class(s.resultType) else thisModule.Type2PrimitiveType(s.resultType) endif ,
+			ownedParameter <- s.params->collect(p | thisModule.Type2Parameter(p)) 
 		)
 }
 
-lazy rule Type2Type {
+lazy rule Type2Parameter {
+	from
+		s: MM!Type
+	to
+		t: MM1!Parameter (
+			name <- 'param',
+			type <- s
+		)	
+}
+
+lazy rule Type2PrimitiveType {
 	from
 		s: MM!Type
 	to
 		t: MM1!PrimitiveType (
-			name <- s.oclIsUndefined().toString()
-		)	
+			name <- if s.oclIsTypeOf(MM!TypeString) then 'String' else
+						if s.oclIsTypeOf(MM!TypeBoolean) then 'Boolean' else
+							if s.oclIsTypeOf(MM!TypeInteger) then 'Integer' else
+								if s.oclIsTypeOf(MM!TypeReal) then 'Real' else 
+									'UnlimitedNatural'
+								endif
+							endif
+						endif
+					endif
+		)
 }
+	

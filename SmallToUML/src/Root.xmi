@@ -4,7 +4,7 @@
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:smalluml="http://www.univ-nantes.fr/smalluml"
-    xsi:schemaLocation="http://www.univ-nantes.fr/smalluml ../model/smalluml.ecore">
+    xsi:schemaLocation="http://www.univ-nantes.fr/smalluml ../../SmallUML/model/smalluml.ecore">
   <elements
       name="Parking">
     <ownedOperations
@@ -12,6 +12,7 @@
         resultType="//@primitiveTypes.1"/>
     <ownedProperties
         name="vehiculesGares"
+        type="//@elements.1"
         upperBound="50"/>
   </elements>
   <elements
@@ -28,9 +29,6 @@
     <ownedOperations
         name="nouveauPassager"
         resultType="//@primitiveTypes.2"
-        params="//@primitiveTypes.0"/>
-    <ownedOperations
-        name="nouveauPassager"
         params="//@primitiveTypes.0"/>
     <ownedProperties
         name="modele"
