@@ -1,42 +1,16 @@
-# SmallUML
-SmallUML est un langage de modélisation dont l'objectif est permettre la modélisation du domaine métier d'un système d'information.
+# Rendu du projet SmallUML
 
-Il s'agit d'une version simplifiée du diagramme de classes UML, débarrassée des certains concepts liés à la conception de logiciels, comme
-la visibilité, les interfaces, les signaux, classes paramétrées, agrégations, dépendances, etc.
+Cette archive contient le code source du projet SmallUML du groupe de Léo Cassiau et Geoffrey Desbrosses.
+Vous y trouverez les fichiers suivants :
 
-## Objectif
-L'objectif de ce projet est de spécifier et d'outiller le langage de modélisation SmallUML.
-La spécification du langage sera réalisée en trois parties.
-Dans la première, la syntaxe abstraite du langage sera spécifiée en EMF.
-Dans la deuxième partie, la syntaxe concrète sera spécifiée en Xtext. 
+- smallUML/SmallUML/model/smalluml.ecore : le méta-modèle SmallUML
+- org.smalluml.SmallUML/src/org/smalluml/SmallUML.xtext : la grammaire du méta-modèle SmallUML défini dans smalluml.ecore
+- SmallToUML/src/Small2UML.atl : les règles de transformations d'un modèle en SmallUML vers un modèle en UML.
+- SmallToUML/src/SmallUMLParking.xmi : un modèle simple respectant notre méta-modèle SmallUML représentant un parking.
+- SmallToUML/src/UMLParking.xmi : le résultat de la transformation de SmallUMLParking.xmi à l'aide de Small2UML.atl.
 
-La troisième partie, la sémantique du langage, sera spécifié en se basant sur UML: les concepts de SmallUML seront traduits en des concepts UML grâce au langage de transformation ATL. 
+Pour réaliser la transformation vous devez :
 
-## Travail à réaliser
-
-Le projet sera réalisé individuellement ou en binômes. Les projets réalisés par des groupes de plus de 2 étudiants ne seront pas évalués.
-
-Avant l'échéance, chaque groupe déposera ses livrables sur le serveur [Madoc](http://madoc.univ-nantes.fr/).
-
-
-
-## Préparation
-Un squelette de projet se trouve sur GitLab de l'Université, sur le dépôt suivant:
-[SmallUML](https://gitlab.univ-nantes.fr/sunye-g/smalluml). 
-Clonez ce projet pour commencer:
-
-    git clone https://gitlab.univ-nantes.fr/sunye-g/smalluml.git
-
-Il s'agit d'un _workspace_ Eclipse, contenant les projets suivants:
-
-- UML: Un projet EMF contenant le méta-modèle UML, version 2.5
-- SmartUML: Un projet EMF devant contenir le méta-modèle de SmallUML
-- SmallToUML: Un projet ATL devant contenir les règles de transformation de modèles SmallUML en UML
-- org.smalluml.SmallUML: Un projet Xtext devant contenir la syntaxe concrète du langage textuel SmallUML
-
-## Travail à rendre
-
-Travail à rendre avant le 19 décembre 2016:
-
-- Le projet, sous la forme d'une archive ou d'une URL vers un gestionnaire de versions. 
-- Le projet doit contenir, en plus du code source, un document expliquant le langage proposé ainsi que son utilisation.
+- importer ce dossier sous eclipse.
+- générer le code correspondant au fichier smalluml.ecore. Pour cela, dans le fichier smalluml.genmodel, faites un clique droit à la racine et utilisé l'option "Generate Model Code"
+- 
