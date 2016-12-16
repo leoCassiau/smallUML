@@ -9,46 +9,51 @@ rule Root2Package {
 		s: MM!Root
 	to
 		t: MM1!Package (
-			packagedElement <- (s.primitiveTypes->collect(p | thisModule.Type2PrimitiveType(p)))
-				.union(s.elements->collect(c | thisModule.Class2Class(c)))
+			packagedElement <- s.primitiveTypes.union(s.elements)
 		)
 }
 
-lazy rule Class2Class {
+rule Class2Class {
 	from
 		s: MM!Class
 	to
 		t: MM1!Class (
 			name <- s.name,
-			--superClass <- s.superClass->collect(sc | thisModule.Type2Type(sc)),
-			ownedAttribute <- s.ownedProperties->collect(p | thisModule.Property2Property(p)),
-			ownedOperation <- s.ownedOperations->collect(o | thisModule.Operation2Operation(o))
+			superClass <- s.superClass,
+			ownedAttribute <- s.ownedProperties,
+			ownedOperation <- s.ownedOperations
 		)
 }
 
-lazy rule Property2Property {
+rule Property2Property {
 	from 
 		s: MM!Property
 	to
 		t: MM1!Property (
 			name <- s.name,
+			type <- s.type,
 			upper <- s.upperBound,
-			lower <- s.lowerBound,
-			type <- if  s.type.oclIsTypeOf(MM!Class)
-				then thisModule.Class2Class(s.type)
-				else thisModule.Type2PrimitiveType(s.type) 
-				endif
+			lower <- s.lowerBound
 		)
 }
 
-lazy rule Operation2Operation {
+rule Operation2Operation {
 	from
 		s: MM!Operation
 	to
 		t: MM1!Operation (
 			name <- s.name,
-			--type <- if s.resultType.oclIsTypeOf(MM!Class) then thisModule.Class2Class(s.resultType) else thisModule.Type2PrimitiveType(s.resultType) endif ,
-			ownedParameter <- s.params->collect(p | thisModule.Type2Parameter(p)) 
+			ownedParameter <- s.params->collect(p | thisModule.Type2Parameter(p)).append((thisModule.Type2ReturnParameter(s.resultType)))
+		)
+}
+
+lazy rule Type2ReturnParameter {
+	from 
+		s: MM!Type
+	to 
+		t: MM1!Parameter (
+			direction <- 'return',
+			type <- s
 		)
 }
 
@@ -62,20 +67,47 @@ lazy rule Type2Parameter {
 		)	
 }
 
-lazy rule Type2PrimitiveType {
+rule TypeString2PrimitiveType {
 	from
-		s: MM!Type
+		s: MM!TypeString
 	to
 		t: MM1!PrimitiveType (
-			name <- if s.oclIsTypeOf(MM!TypeString) then 'String' else
-						if s.oclIsTypeOf(MM!TypeBoolean) then 'Boolean' else
-							if s.oclIsTypeOf(MM!TypeInteger) then 'Integer' else
-								if s.oclIsTypeOf(MM!TypeReal) then 'Real' else 
-									'UnlimitedNatural'
-								endif
-							endif
-						endif
-					endif
+			name <- 'String'
 		)
 }
-	
+
+rule TypeBoolean2PrimitiveType {
+	from
+		s: MM!TypeBoolean
+	to
+		t: MM1!PrimitiveType (
+			name <- 'Boolean'
+		)
+}
+
+rule TypeInteger2PrimitiveType {
+	from
+		s: MM!TypeInteger
+	to
+		t: MM1!PrimitiveType (
+			name <- 'Integer'
+		)
+}
+
+rule TypeReal2PrimitiveType {
+	from
+		s: MM!TypeReal
+	to
+		t: MM1!PrimitiveType (
+			name <- 'Real'
+		)
+}
+
+rule TypeUnlimitedNatural2PrimitiveType {
+	from
+		s: MM!TypeUnlimitedNatural
+	to
+		t: MM1!PrimitiveType (
+			name <- 'UnlimitedNatural'
+		)
+}
