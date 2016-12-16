@@ -1,0 +1,37 @@
+primitiveType Boolean
+primitiveType Integer
+primitiveType String
+
+Class Parking {
+	properties {
+		0..50 Vehicule vehiculesGares
+	}
+	operations {
+		nbVehiculesGares() : ^Integer
+	}
+}
+
+Class Vehicule {
+	properties {
+		1..1 ^String modele
+		1..1 ^String couleur
+	}
+	operations {
+		changerConducteur(^String)
+		sonConducteur() : ^String
+		demarrer() : ^Boolean
+		nouveauPassager(^String) : ^Boolean
+		nouveauPassager(^String, ^String) : ^Boolean
+	}
+}
+
+Class Voiture : Vehicule {
+	properties {
+		1..1 ^String immatriculation
+	}
+	operations {
+		demarrer() : ^Boolean
+		nouveauPassager(^String) : ^Boolean
+		nouveauPassager(^String, ^String) : ^Boolean
+	}
+}
